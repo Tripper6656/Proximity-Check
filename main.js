@@ -1,5 +1,5 @@
 var locRequest;
-var apiKey = AIzaSyC53LdjmgLbZZvBXb3W8r1kpdW2UqPJfVE;
+var apiKey = 'AIzaSyC53LdjmgLbZZvBXb3W8r1kpdW2UqPJfVE';
 
 //Get input from user from the search bar
 function getValue(id) {
@@ -20,6 +20,6 @@ function requestLocation(text){
         address = address + '+' + arr[i];
     }
     //creates url
-    webAddr = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyC53LdjmgLbZZvBXb3W8r1kpdW2UqPJfVE";
+    webAddr = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + apiKey;
     alert(webAddr);
 }
