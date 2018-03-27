@@ -10,4 +10,6 @@ function getValue(id) {
 
 function requestLocation(text){
     //parse text and put in https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY
+    var arr = text.split(" ");
+    alert(arr[1]);
 }
