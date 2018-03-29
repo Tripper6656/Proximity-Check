@@ -5,7 +5,6 @@ var apiKey = 'AIzaSyC53LdjmgLbZZvBXb3W8r1kpdW2UqPJfVE';
 function getValue(id) {
     //sets text to input in search bar
     text = document.getElementById(id).value;
-    document.write(text);
     requestLocation(text);
     return false;
 }
@@ -22,16 +21,22 @@ function requestLocation(text){
     //creates url
     webAddr = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + apiKey;
 
+    //JSON with all information about address
     var startAddr = JSON.parse(Get(webAddr));
-    alert(startAddr.formatted_address);
+    
+    //Longitude and Latitude of starting address
+    var addrLat = startAddr.results[0].geometry.location.lat;
+    var addrLng = startAddr.results[0].geometry.location.lng;
+
+    //creates url for hospitals
+    var hospUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + addrLat + "," + addrLng + "&radius=20&keyword=hospital&key=" + apiKey;
+    console.log(hospUrl);
 }
 
-function getJSONP(url, success){
-    var ud = '_'+ + new Date,
-        script = document.createElement('script'),
-        head = document.getElementsByTagName('head')[0] || document.documentElement;
-
-    window[ud] = function(data){
-        head.removeChild()
-    }
+//Returns JSON with information for address
+function Get(myUrl){
+    var httpReq = new XMLHttpRequest();
+    httpReq.open("GET", myUrl, false);
+    httpReq.send(null);
+    return httpReq.responseText;
 }
