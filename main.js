@@ -21,5 +21,17 @@ function requestLocation(text){
     }
     //creates url
     webAddr = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + apiKey;
-    alert(webAddr);
+
+    var startAddr = JSON.parse(Get(webAddr));
+    alert(startAddr.formatted_address);
+}
+
+function getJSONP(url, success){
+    var ud = '_'+ + new Date,
+        script = document.createElement('script'),
+        head = document.getElementsByTagName('head')[0] || document.documentElement;
+
+    window[ud] = function(data){
+        head.removeChild()
+    }
 }
