@@ -32,7 +32,7 @@ function requestLocation(text){
 
     //Goes to method to handle the hospital
     //creates url for hospitals
-    var hospUrl = "https://maps.googleapis.com/maps/api/place/textsearch/json?location=" + lat + "," + lng + "&radius=10&type=hospital&key=" + apiKey;
+    var hospUrl = "https://maps.googleapis.com/maps/api/place/textsearch/json?location=" + lat + "," + lng + "&radius=8000&type=hospital&key=" + apiKey;
 
     //Get JSON with all hospitals in area
     var hospitals = JSON.parse(Get(hospUrl));
