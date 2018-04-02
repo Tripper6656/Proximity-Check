@@ -19,24 +19,58 @@ function requestLocation(text){
         address = address + '+' + arr[i];
     }
     //creates url
-    webAddr = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + apiKey;
+    var webAddr = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + apiKey;
 
     //JSON with all information about address
     var startAddr = JSON.parse(Get(webAddr));
+
+    //alert(startAddr.results[0].formatted_address);
     
     //Longitude and Latitude of starting address
     var addrLat = startAddr.results[0].geometry.location.lat;
     var addrLng = startAddr.results[0].geometry.location.lng;
 
+    //Goes to method to handle the hospital
     //creates url for hospitals
-    var hospUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + addrLat + "," + addrLng + "&radius=20&keyword=hospital&key=" + apiKey;
-    console.log(hospUrl);
+    var hospUrl = "https://maps.googleapis.com/maps/api/place/textsearch/json?location=" + lat + "," + lng + "&radius=10&type=hospital&key=" + apiKey;
+
+    //Get JSON with all hospitals in area
+    var hospitals = JSON.parse(Get(hospUrl));
+
+    alert(hospitals.results[0].formatted_address);
+
+    var hospName = hospitals.results[i].name;
+    var hospAddr = hospitals.results[i].formatted_address;
+    var hospLat = hospitals.results[i].geometry.location.lat;
+    var hospLng = hospitals.results[i].geometry.location.lng;
 }
 
 //Returns JSON with information for address
 function Get(myUrl){
+    var resp = '';
     var httpReq = new XMLHttpRequest();
-    httpReq.open("GET", myUrl, false);
-    httpReq.send(null);
-    return httpReq.responseText;
+    if(httpReq != null){
+        httpReq.open("GET", myUrl, false);
+        httpReq.send();
+        resp = httpReq.responseText;
+    }
+    return resp;
+}
+
+
+//Gets hospital JSON search and prints name, address and distance of hospital
+function printHosp(lat, lng, i){
+    //creates url for hospitals
+    var hospUrl = "https://maps.googleapis.com/maps/api/place/textsearch/json?location=" + lat + "," + lng + "&radius=10&type=hospital&key=" + apiKey;
+
+    //Get JSON with all hospitals in area
+    var hospitals = JSON.parse(Get(hospUrl));
+    console.log(hospitals.results[0].name);
+
+    var hospName = hospitals.results[i].name;
+    var hospAddr = hospitals.results[i].formatted_address;
+    var hospLat = hospitals.results[i].geometry.location.lat;
+    var hospLng = hospitals.results[i].geometry.location.lng;
+
+    return(hospName + " at " + hospAddr + ": Lat:" + hospLat + " and Lng:" + hospLng);
 }
