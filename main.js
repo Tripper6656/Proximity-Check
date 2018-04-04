@@ -22,7 +22,14 @@ function requestLocation(text){
     var webAddr = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + apiKey;
 
     //JSON with all information about address
-    var startAddr = JSON.parse(Get(webAddr));
+    var startAddr;
+    Get(webAddr, function(error, data){
+        if(!error){
+            startAddr = JSON.parse(data);
+        } else {
+            console.log(error);
+        } 
+    }); // I got this one to actually load
 
     //alert(startAddr.results[0].formatted_address);
     
@@ -32,10 +39,17 @@ function requestLocation(text){
 
     //Goes to method to handle the hospital
     //creates url for hospitals
-    var hospUrl = "https://maps.googleapis.com/maps/api/place/textsearch/json?location=" + lat + "," + lng + "&radius=8000&type=hospital&key=" + apiKey;
+    var hospUrl = "https://maps.googleapis.com/maps/api/place/textsearch/json?location=" + addrLat + "," + addrLng + "&radius=8000&type=hospital&key=" + apiKey;
 
     //Get JSON with all hospitals in area
-    var hospitals = JSON.parse(Get(hospUrl));
+    var hospitals;
+    Get(hospUrl, function(error, data){
+        if(!error) {
+            hospitals = JSON.parse(data);
+        } else {
+            console.log(error);
+        }
+    }); // But this one wont load
 
     alert(hospitals.results[0].formatted_address);
 
@@ -46,15 +60,19 @@ function requestLocation(text){
 }
 
 //Returns JSON with information for address
-function Get(myUrl){
-    var resp = '';
+function Get(myUrl,callback){
     var httpReq = new XMLHttpRequest();
     if(httpReq != null){
         httpReq.open("GET", myUrl, false);
+        httpReq.onreadystatechange = function() {
+            if(httpReq.readyState === httpReq.DONE && httpReq.status === 200) {
+                callback(false, httpReq.responseText);
+            } else {
+                callback('AJAX Error');
+            }
+        };
         httpReq.send();
-        resp = httpReq.responseText;
     }
-    return resp;
 }
 
 
